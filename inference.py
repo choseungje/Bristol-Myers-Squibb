@@ -121,7 +121,7 @@ class CFG:
     print_freq = 2000
     num_workers = 0
     model_name = 'dm_nfnet_f2'
-    size = 256
+    size = 300
     scheduler = 'CosineAnnealingLR'  # ['ReduceLROnPlateau', 'CosineAnnealingLR', 'CosineAnnealingWarmRestarts']
     epochs = 20  # not to exceed 9h
     # factor=0.2 # ReduceLROnPlateau
@@ -132,16 +132,16 @@ class CFG:
     encoder_lr = 1e-4
     decoder_lr = 4e-4
     min_lr = 1e-6
-    batch_size = 35
+    batch_size = 24
     weight_decay = 1e-6
     gradient_accumulation_steps = 1
     max_grad_norm = 1
-    attention_dim = 768
-    embed_dim = 768
-    decoder_dim = 768
+    attention_dim = 512
+    embed_dim = 512
+    decoder_dim = 512
     dropout = 0.5
     seed = 42
-    n_fold = 5
+    n_fold = 12
     trn_fold = [0]  # [0, 1, 2, 3, 4]
     train = True
 
@@ -203,7 +203,7 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
-device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:2' if torch.cuda.is_available() else 'cpu')
 
 """# Utils"""
 
@@ -508,11 +508,11 @@ def inference(test_loader, encoder, decoder, tokenizer, device):
     return text_preds
 
 
-with open('./output_nfnet_f2_last/train.log') as f:
+with open('./output_nfnet_f2_zzzz/train.log') as f:
     s = f.read()
 print(s)
 
-states = torch.load(f'./output_nfnet_f2_last/{CFG.model_name}_fold0_epoch4.pth', map_location=torch.device('cpu'))
+states = torch.load(f'./output_nfnet_f2_zzzz/{CFG.model_name}_fold0_epoch4.pth', map_location=torch.device('cpu'))
 
 encoder = Encoder(CFG.model_name, pretrained=False)
 encoder.load_state_dict(states['encoder'])
